@@ -50,67 +50,60 @@ def day3_a():
 
 def day3_b():
     input = DayUtil.open_file('day3')
-
     # find out set bit for each position
     bucket = [0]*len(input[0])
     for num in input:
         for i, ch in enumerate(num):
             if ch == '1':
                 bucket[i] += 1
-    mask_key = [1 if num >= len(input) // 2 else 0 for num in bucket]
-    mask = 0
-    for digit in mask_key:
-        mask *= 2
-        mask += digit
-    print(mask_key)
+    cutoff = len(input) // 2 if len(input) % 2 == 0 else len(input) // 2 + 1
+    
+    life_supp_mask_key = [1 if num >= cutoff else 0 for num in bucket]
+    oxygen_gen_mask_key = [0 if num >= cutoff else 1 for num in bucket]
+
+    print(bucket, len(input))
+    print(life_supp_mask_key)
+    print(oxygen_gen_mask_key)
     
     life_support_max, oxygen_gen_max = 0, 0
     life_support_num, oxygen_gen_num = 0, 0
     
     for num in input:
-        curr_total = 0
-        for i in range(len(num)):
-            if int(num[i]) == mask_key[i]:
-                curr_total *= 2
-                curr_total += int(num[i])
+        curr_max_pos = 0
+        for digit in range(curr_max_pos, len(num)):
+            if int(num[digit]) == int(life_supp_mask_key[digit]):
+                curr_max_pos += 1
             else:
-                if curr_total > life_support_max:
+                if curr_max_pos > life_support_max:
+                    life_support_max = curr_max_pos
                     life_support_num = num
                 break
 
     for num in input:
-        curr_total = 0
-        for i in range(len(num)):
-            if int(num[i]) != mask_key[i]:
-                curr_total *= 2
-                curr_total += int(num[i])
+        curr_max_pos = 0
+        for digit in range(curr_max_pos, len(num)):
+            if int(num[digit]) == int(oxygen_gen_mask_key[digit]):
+                curr_max_pos += 1
             else:
-                if curr_total > oxygen_gen_max:
+                if curr_max_pos > oxygen_gen_max:
+                    oxygen_gen_max = curr_max_pos
                     oxygen_gen_num = num
-                break            
+                break                
 
-    print(life_support_num)
-    print(oxygen_gen_num)
+    print(life_support_num, oxygen_gen_num)
 
-    int_life_support = 0
-    for char in life_support_num:
-        int_life_support *= 2
-        int_life_support += int(char)
-    print(int_life_support)
+    life_support = 0
+    for digit in life_support_num:
+        life_support *= 2
+        life_support += int(digit)
 
-    int_oxygen_num = 0
-    for char in oxygen_gen_num:
-        int_oxygen_num *= 2
-        int_oxygen_num += int(char)
-    print(int_oxygen_num)    
+    oxygen_gen = 0
+    for digit in oxygen_gen_num:
+        oxygen_gen *= 2
+        oxygen_gen += int(digit)
 
-    print(int_life_support * int_oxygen_num)
-
-
-
-
-
-
+    print(life_support, oxygen_gen)
+    print(life_support * oxygen_gen)
 
 #print(day3_a())
 print(day3_b())
