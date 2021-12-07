@@ -31,80 +31,50 @@ def day3_a():
 
 
 """
-- life support rating = oxygen generator rating * CO2 scrubber rating
-- left to right: 2 buckets: 
-        all numbers with that bit most common
-            tie, keep 1
-        all numbers with that bit least common
-            tie, keep 0
+^ will reveal most common??
 
--first pass, divide buckets by first bit. Then iterate through each bucket 
-    with index 1 to end.
--still will be O(n) (technically O(xn) with x being number of digits) but complexity 
-    does not increase with number of input.
-    -if we factor that numbers could increase in value, then we can say it will be
-        O(xy) with x being # sig. digits, y being number of qty of input
--instead of iterating i for each sig. digit, let's keep a max value. If 
+1011
+1101
+AND?
+1001
+
 """
 
 
 def day3_b():
     input = DayUtil.open_file('day3')
-    # find out set bit for each position
-    bucket = [0]*len(input[0])
-    for num in input:
-        for i, ch in enumerate(num):
-            if ch == '1':
-                bucket[i] += 1
-    cutoff = len(input) // 2 if len(input) % 2 == 0 else len(input) // 2 + 1
+    input = ["00100","11110","10110","10111","10101","01111","00111","11100","10000","11001","00010","01010"]
     
-    life_supp_mask_key = [1 if num >= cutoff else 0 for num in bucket]
-    oxygen_gen_mask_key = [0 if num >= cutoff else 1 for num in bucket]
-
-    print(bucket, len(input))
-    print(life_supp_mask_key)
-    print(oxygen_gen_mask_key)
-    
-    life_support_max, oxygen_gen_max = 0, 0
-    life_support_num, oxygen_gen_num = 0, 0
-    
-    for num in input:
-        curr_max_pos = 0
-        for digit in range(curr_max_pos, len(num)):
-            if int(num[digit]) == int(life_supp_mask_key[digit]):
-                curr_max_pos += 1
+    oxygen_input = input[:]
+    zeroes, ones = [], []
+    bit_position = 0
+    while len(oxygen_input) > 1:
+        for reading in oxygen_input:
+            if reading[bit_position] == '0':
+                zeroes.append(reading)
             else:
-                if curr_max_pos > life_support_max:
-                    life_support_max = curr_max_pos
-                    life_support_num = num
-                break
+                ones.append(reading)
+        oxygen_input = ones[:] if len(ones) >= len(zeroes) else zeroes[:]
+        bit_position += 1
+        zeroes, ones = [], []
+    print(oxygen_input)
 
-    for num in input:
-        curr_max_pos = 0
-        for digit in range(curr_max_pos, len(num)):
-            if int(num[digit]) == int(oxygen_gen_mask_key[digit]):
-                curr_max_pos += 1
+    co2_input = input[:]
+    zeroes, ones = [], []
+    bit_position = 0
+    while len(co2_input) > 1:
+        for reading in co2_input:
+            if reading[bit_position] == '0':
+                zeroes.append(reading)
             else:
-                if curr_max_pos > oxygen_gen_max:
-                    oxygen_gen_max = curr_max_pos
-                    oxygen_gen_num = num
-                break                
+                ones.append(reading)
+        co2_input = zeroes[:] if len(zeroes) <= len(ones) else ones[:]
+        bit_position += 1
+        zeroes, ones = [], []
+    print(co2_input)    
 
-    print(life_support_num, oxygen_gen_num)
-
-    life_support = 0
-    for digit in life_support_num:
-        life_support *= 2
-        life_support += int(digit)
-
-    oxygen_gen = 0
-    for digit in oxygen_gen_num:
-        oxygen_gen *= 2
-        oxygen_gen += int(digit)
-
-    print(life_support, oxygen_gen)
-    print(life_support * oxygen_gen)
-
-#print(day3_a())
 print(day3_b())
+
+
+
 
