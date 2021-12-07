@@ -28,22 +28,9 @@ def day3_a():
     return total
 
 
-
-
-"""
-^ will reveal most common??
-
-1011
-1101
-AND?
-1001
-
-"""
-
-
 def day3_b():
     input = DayUtil.open_file('day3')
-    input = ["00100","11110","10110","10111","10101","01111","00111","11100","10000","11001","00010","01010"]
+    #input = ["00100","11110","10110","10111","10101","01111","00111","11100","10000","11001","00010","01010"]
     
     oxygen_input = input[:]
     zeroes, ones = [], []
@@ -73,6 +60,19 @@ def day3_b():
         zeroes, ones = [], []
     print(co2_input)    
 
+    oxygen = 0
+    for digit in oxygen_input[0]:
+        oxygen *= 2
+        oxygen += int(digit)
+    print(oxygen)
+
+    co2 = 0
+    for digit in co2_input[0]:
+        co2 *= 2
+        co2 += int(digit)
+    print(co2)
+
+    print(oxygen * co2)
 print(day3_b())
 
 
