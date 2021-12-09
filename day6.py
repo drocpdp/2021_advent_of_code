@@ -15,9 +15,9 @@ def extract_data():
     return data
 
 
-def day6():
+def day6(num_days):
     data = Counter(extract_data())
-    for day in range(80):
+    for day in range(num_days):
         regenerate = data[0]
         for i in range(0, 8):
             data[i] = data[i+1]
@@ -25,5 +25,7 @@ def day6():
         data[8] = regenerate
     return sum(data.values())
 
-
-print(day6())
+#day 6 a
+#print(day6(80))
+# day 6 b
+print(day6(256))
