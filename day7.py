@@ -6,17 +6,17 @@ def extract_data():
     #data = [16,1,2,0,4,2,7,1,2,14] # test data
     return data
 
-def get_val_for_alignment_position(align_idx):
-    data = Counter(extract_data())
+def get_val_for_alignment_position(align_idx, data):
     total = 0
     for item in data:
         total += abs(align_idx - item) * (data[item])
     return total
 
 def day7():
+    data = Counter(extract_data())
     min_value = float('inf')
-    for i in range(2000):
-        min_value = min(get_val_for_alignment_position(i), min_value)
+    for i in range(max(data)):
+        min_value = min(get_val_for_alignment_position(i, data), min_value)
     print(min_value)
 
 day7()
