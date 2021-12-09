@@ -19,4 +19,4 @@ def day7():
         min_value = min(get_val_for_alignment_position(i, data), min_value)
     print(min_value)
 
-day7()
+day7() #
