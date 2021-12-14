@@ -1,13 +1,17 @@
 from day_util import DayUtil
 
 def day11():
-    grid = [[int(pt) for pt in line] for line in DayUtil().open_file("day11_test")]
+    grid = [[int(pt) for pt in line] for line in DayUtil().open_file("day11")]
+    total_zeros = 0
     for day in range(100):
         zeros_remain = increment(grid)
+        total_zeros += len(zeros_remain)
         while zeros_remain:
             row,col = zeros_remain.pop()
-            zeros_remain.extend(zero(row,col,grid))
-    print(grid)
+            more_zeros = zero(row,col,grid)
+            total_zeros += len(more_zeros)
+            zeros_remain.extend(more_zeros)
+    return total_zeros
 
 
 def increment(grid):
@@ -31,4 +35,4 @@ def zero(row, col, grid):
 
 
 
-day11()
+print(day11())
