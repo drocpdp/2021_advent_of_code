@@ -47,7 +47,7 @@ def day15_2():
                         djikstra[row][col] + transposed_data(rrow, ccol, data),
                         djikstra[rrow][ccol]
                         )
-    return djikstra[-1][-1]
+    return djikstra[-1][-2]
 
 #print(day15())
 print(day15_2())
