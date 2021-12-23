@@ -1,30 +1,27 @@
 from day_util import DayUtil
+from collections import deque
 
 def get_data():
-    data = DayUtil().open_file("day15_test")
+    data = DayUtil().open_file("day15")
     return [[int(col) for col in row] for row in data]
 
 
 def day15():
+    # djikstra algo
+    # first with DFS, then with priority queue if suboptimal
     data = get_data()
     visited = [[False for col in row] for row in data]
-    min_sum = float("inf")
-
-    def backtrack(row, col, curr_sum):
-        nonlocal min_sum
-        curr_sum += data[row][col]
-        if row == (len(data) - 1) and col == (len(data[0]) - 1):
-            min_sum = min(min_sum, curr_sum)
-            return
-        for rrow, ccol in ((row-1,col),(row+1,col),(row,col-1),(row,col+1)):
-            if 0 <= rrow < len(data) and 0 <= ccol < len(data[0]) and visited[rrow][ccol] is False:
-                    visited[rrow][ccol] = True
-                    backtrack(rrow,ccol, curr_sum)
-                    visited[rrow][ccol] = False
-        return
-
-    backtrack(0,0,0)
-    return min_sum
-
+    djikstra = [[float('inf') for col in row] for row in data]
+    djikstra[0][0] = data[0][0]
+    dq = deque([(0,0)])
+    visited[0][0] = True
+    while dq:
+        y,x = dq.popleft()
+        visited[y][x] = True
+        for yy,xx in ((y+1,x),(y-1,x),(y,x+1),(y,x-1)):
+            if 0 <= yy < len(djikstra) and 0 <= xx < len(djikstra[0]) and visited[yy][xx] is False:
+                djikstra[yy][xx] = min(djikstra[y][x] + data[yy][xx], djikstra[yy][xx])
+                dq.append([yy,xx])
+    return djikstra[-1][-1] - 1
 
 print(day15())
