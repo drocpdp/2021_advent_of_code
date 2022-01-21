@@ -1,4 +1,5 @@
 from day_util import DayUtil
+from functools import reduce
 import operator
 
 stack = []
@@ -10,16 +11,10 @@ def get_max(operands):
     return max(operands)
 
 def multiply(operands):
-    total = operands[0]
-    for i in range(1, len(operands)):
-        total *= operands[i]
-    return total
+    return reduce(lambda i,j: i*j, operands)
 
 def adding(operands):
-    total = operands[0]
-    for i in range(1, len(operands)):
-        total += operands[i]
-    return total
+    return reduce(lambda i,j: i+j, operands)
 
 def is_equal(operands):
     return 1 if operands.count(operands[0]) == len(operands) else 0
