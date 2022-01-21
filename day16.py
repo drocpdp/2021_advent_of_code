@@ -3,6 +3,7 @@ from functools import reduce
 import operator
 
 stack = []
+line = 0
 
 def get_min(operands):
     return min(operands)
@@ -17,13 +18,19 @@ def adding(operands):
     return reduce(lambda i,j: i+j, operands)
 
 def is_equal(operands):
+    if len(operands) > 2:
+        print("is_equal() ERROR - operands=", operands)    
     return 1 if operands.count(operands[0]) == len(operands) else 0
 
 def greater_than(operands):
+    if len(operands) > 2:
+        print("greater_than() ERROR - operands=", operands)
     # stack pushed right to left, but read left to right
     return 1 if operands[1] > operands[0] else 0
 
 def less_than(operands):
+    if len(operands) > 2:
+        print("less_than() ERROR - operands=", operands)    
     # stack pushed right to left, but read left to right
     return 1 if operands[1] < operands[0] else 0
 
@@ -38,7 +45,7 @@ operators = {
 }
 
 def get_data():
-    data = DayUtil().open_file("day16")
+    data = DayUtil().open_file("day16_test")
     binary_padded = ""
     for hexa in data:
         for ch in hexa:
@@ -98,8 +105,12 @@ def process_literal(start_ptr, inpt):
     return ptr # return last pointer, if invalid return None
 
 def calculate(stack):
+    global line
     op_stack, results_stack = [], []
     while stack:
+        print('\n')
+        print('LINE:%s:::' % (line), 'stack', stack)
+        line += 1
         curr = stack.pop()
         if type(curr) == int:
             op_stack.append(curr)
@@ -108,10 +119,9 @@ def calculate(stack):
                 print('curr', curr, 'op_stack', op_stack, 'results_stack', results_stack)
                 results_stack.append(curr(op_stack))
                 op_stack = []
-            else:
+            elif results_stack:
                 print('curr', curr, 'op_stack', op_stack, 'results_stack', results_stack)
-                answer = curr(results_stack)
-                results_stack = [answer]
+                results_stack = [curr(results_stack)]
     print('op_stack', op_stack, 'results_stack', results_stack, 'stack', stack)
     print(results_stack)
 
