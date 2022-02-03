@@ -1,1 +1,1 @@
-nontest
+target area: x=169..206, y=-108..-68
